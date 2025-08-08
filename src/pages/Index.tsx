@@ -187,7 +187,7 @@ const Callouts = () => {
   const { showCallout } = useLiveData();
   const ishttps = window.location.protocol === "https:";
   return (
-    <Flex direction="column" gap="2" className="m-2">
+    <Flex direction="column" gap="2" className="m-2" hidden={true}>
       <Callout.Root m="2" hidden={ishttps} color="red">
         <Callout.Icon>
           <svg

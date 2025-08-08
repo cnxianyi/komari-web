@@ -81,6 +81,7 @@ const Node = ({ basic, live, online }: NodeProps) => {
         width: "100%",
         margin: "0 auto",
         transition: "all 0.2s ease-in-out",
+        padding: "24px",
       }}
       className="node-card hover:cursor-pointer hover:shadow-lg hover:bg-accent-2"
     >
@@ -139,7 +140,7 @@ const Node = ({ basic, live, online }: NodeProps) => {
 
         <Separator size="4" className="-mt-1" />
 
-        <Flex direction="column" gap="2" className="p-4">
+        <Flex direction="column" gap="2" >
           <Flex justify="between" hidden={isMobile} >
             <Text size="2" color="gray">
               OS
@@ -293,7 +294,7 @@ export const NodeGrid = ({ nodes, liveData }: NodeGridProps) => {
 
   return (
     <Box
-      className="gap-2 md:gap-4"
+      className="gap-2 md:gap-8"
       style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
