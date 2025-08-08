@@ -38,6 +38,8 @@ export function formatBytes(bytes: number): string {
     unitIndex++;
   }
 
+  if (!size) return "0 B";
+
   return `${size.toFixed(2)} ${units[unitIndex]}`;
 }
 
@@ -63,6 +65,9 @@ const Node = ({ basic, live, online }: NodeProps) => {
     : 0;
   const diskUsagePercent = basic.disk_total
     ? (liveData.disk.used / basic.disk_total) * 100
+    : 0;
+  const swapUsagePercent = basic.swap_total
+    ? (liveData.swap?.used / basic.swap_total) * 100
     : 0;
 
   const uploadSpeed = formatBytes(liveData.network.up);
@@ -134,8 +139,8 @@ const Node = ({ basic, live, online }: NodeProps) => {
 
         <Separator size="4" className="-mt-1" />
 
-        <Flex direction="column" gap="2">
-          <Flex justify="between" hidden={isMobile}>
+        <Flex direction="column" gap="2" className="p-4">
+          <Flex justify="between" hidden={isMobile} >
             <Text size="2" color="gray">
               OS
             </Text>
@@ -151,6 +156,14 @@ const Node = ({ basic, live, online }: NodeProps) => {
           <Flex className="md:flex-col flex-row md:gap-1 gap-4">
             {/* CPU Usage */}
             <UsageBar label={t("nodeCard.cpu")} value={liveData.cpu.usage} />
+            <Text
+              className="md:block hidden"
+              size="1"
+              color="gray"
+              style={{ marginTop: "-4px" }}
+            >
+              {t("nodeCard.load")}: {liveData.load?.load1} / {liveData.load?.load5} / {liveData.load?.load15}
+            </Text>
 
             {/* Memory Usage */}
             <UsageBar label={t("nodeCard.ram")} value={memoryUsagePercent} />
@@ -161,6 +174,18 @@ const Node = ({ basic, live, online }: NodeProps) => {
               style={{ marginTop: "-4px" }}
             >
               ({formatBytes(liveData.ram.used)} / {formatBytes(basic.mem_total)}
+              )
+            </Text>
+
+            {/* Memory Usage */}
+            <UsageBar label={t("nodeCard.swap")} value={swapUsagePercent} />
+            <Text
+              className="md:block hidden"
+              size="1"
+              color="gray"
+              style={{ marginTop: "-4px" }}
+            >
+              ({formatBytes(liveData.swap?.used)} / {formatBytes(basic.swap_total)}
               )
             </Text>
 
