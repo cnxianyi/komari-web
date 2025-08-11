@@ -300,6 +300,13 @@
     "mint": "Mint",
     "sky": "Sky"
   },
+  "themeSettings": {
+    "background_image_url": "Background Image URL",
+    "opacity": "Set Opacity 0.1-1.0",
+    "input_placeholder": "Enter background image URL",
+    "confirm": "Confirm",
+    "opacity_placeholder": "0.1-1.0"
+  },
   "chart": {
     "cpu_usage": "CPU Usage",
     "process": "Processes",

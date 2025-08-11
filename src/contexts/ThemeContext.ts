@@ -16,6 +16,8 @@ export type Appearance = typeof allowedAppearances[number];
 export const THEME_DEFAULTS = {
   appearance: "system" as Appearance,
   color: "iris" as Colors,
+  backgroundImageUrl: "",
+  backgroundOpacity: 0.1,
 } as const;
 
 export interface ThemeContextType {
@@ -23,6 +25,10 @@ export interface ThemeContextType {
   setAppearance: (appearance: Appearance) => void;
   color: Colors;
   setColor: (color: Colors) => void;
+  backgroundImageUrl: string;
+  setBackgroundImageUrl: (url: string) => void;
+  backgroundOpacity: number;
+  setBackgroundOpacity: (opacity: number) => void;
 }
 
 export const ThemeContext = createContext<ThemeContextType>({
@@ -30,5 +36,9 @@ export const ThemeContext = createContext<ThemeContextType>({
   setAppearance: () => {},
   color: THEME_DEFAULTS.color,
   setColor: () => {},
+  backgroundImageUrl: THEME_DEFAULTS.backgroundImageUrl,
+  setBackgroundImageUrl: () => {},
+  backgroundOpacity: THEME_DEFAULTS.backgroundOpacity,
+  setBackgroundOpacity: () => {},
 });
 

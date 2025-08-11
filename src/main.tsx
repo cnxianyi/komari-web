@@ -32,6 +32,14 @@ const App = () => {
     "color",
     THEME_DEFAULTS.color
   );
+  const [backgroundImageUrl, setBackgroundImageUrl] = useLocalStorage<string>(
+    "backgroundImageUrl",
+    THEME_DEFAULTS.backgroundImageUrl
+  );
+  const [backgroundOpacity, setBackgroundOpacity] = useLocalStorage<number>(
+    "backgroundOpacity",
+    THEME_DEFAULTS.backgroundOpacity
+  );
 
   // Use the system theme hook to resolve "system" to actual theme
   const resolvedAppearance = useSystemTheme(appearance);
@@ -42,8 +50,12 @@ const App = () => {
       setAppearance,
       color,
       setColor,
+      backgroundImageUrl,
+      setBackgroundImageUrl,
+      backgroundOpacity,
+      setBackgroundOpacity,
     }),
-    [appearance, setAppearance, color, setColor]
+    [appearance, setAppearance, color, setColor, backgroundImageUrl, setBackgroundImageUrl, backgroundOpacity, setBackgroundOpacity]
   );
   const routing = useRoutes(routes);
   return (

@@ -1,8 +1,9 @@
-import { DropdownMenu, IconButton, Text } from "@radix-ui/themes";
-import { useContext, type ReactNode } from "react";
+import { DropdownMenu, IconButton, Text, Button, Flex } from "@radix-ui/themes";
+import { useContext, type ReactNode, useState, useEffect } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { BlendingModeIcon } from "@radix-ui/react-icons";
 import { useTranslation } from "react-i18next";
+import { Input } from "./ui/input";
 
 interface ColorSwitchProps {
   icon?: ReactNode;
@@ -15,8 +16,34 @@ const ColorSwitch = ({
     </IconButton>
   ),
 }: ColorSwitchProps = {}) => {
-  const { setColor } = useContext(ThemeContext);
+  const { setColor, backgroundImageUrl, setBackgroundImageUrl, backgroundOpacity, setBackgroundOpacity } = useContext(ThemeContext);
   const { t } = useTranslation();
+  const [backgroundUrl, setBackgroundUrl] = useState(backgroundImageUrl);
+  const [opacityValue, setOpacityValue] = useState(backgroundOpacity.toString());
+
+  // 同步 ThemeContext 中的值变化
+  useEffect(() => {
+    setBackgroundUrl(backgroundImageUrl);
+  }, [backgroundImageUrl]);
+
+  useEffect(() => {
+    setOpacityValue(backgroundOpacity.toString());
+  }, [backgroundOpacity]);
+
+  const handleBackgroundSubmit = () => {
+    if (backgroundUrl.trim()) {
+      setBackgroundImageUrl(backgroundUrl.trim());
+      setBackgroundUrl("");
+    }
+  };
+
+  const handleOpacitySubmit = () => {
+    const opacity = parseFloat(opacityValue);
+    if (!isNaN(opacity) && opacity >= 0 && opacity <= 1) {
+      setBackgroundOpacity(opacity);
+      setOpacityValue("0.1");
+    }
+  };
 
   return (
     <DropdownMenu.Root>
@@ -50,6 +77,46 @@ const ColorSwitch = ({
         <DropdownMenu.Item onSelect={() => setColor("lime")}><Text color="lime">{t('color.lime')}</Text></DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => setColor("mint")}><Text color="mint">{t('color.mint')}</Text></DropdownMenu.Item>
         <DropdownMenu.Item onSelect={() => setColor("sky")}><Text color="sky">{t('color.sky')}</Text></DropdownMenu.Item>
+        
+        <DropdownMenu.Separator />
+        
+        {/* 背景图片输入框 */}
+        <div className="p-2">
+          <Flex direction="column" gap="2">
+            <Text size="2" color="gray">{t('themeSettings.background_image_url')}</Text>
+            <Input
+              type="url"
+              placeholder={t('themeSettings.input_placeholder')}
+              value={backgroundUrl}
+              onChange={(e) => setBackgroundUrl(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleBackgroundSubmit()}
+            />
+            <Button size="1" onClick={handleBackgroundSubmit}>
+              {t('themeSettings.confirm')}
+            </Button>
+          </Flex>
+        </div>
+        
+        {/* 透明度输入框 */}
+        <div className="p-2">
+          <Flex direction="column" gap="2">
+            <Text size="2" color="gray">{t('themeSettings.opacity')}</Text>
+            <Input
+              type="number"
+              min="0"
+              max="1"
+              step="0.1"
+              placeholder={t('themeSettings.opacity_placeholder')}
+              value={opacityValue}
+              onChange={(e) => setOpacityValue(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleOpacitySubmit()}
+            />
+            <Button size="1" onClick={handleOpacitySubmit}>
+              {t('themeSettings.confirm')}
+            </Button>
+            </Flex>
+          </div>
+        
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );

@@ -300,6 +300,13 @@
     "mint": "薄荷色",
     "sky": "天蓝色"
   },
+  "themeSettings": {
+    "background_image_url": "背景画像URL",
+    "opacity": "透明度設定 0.1-1.0",
+    "input_placeholder": "背景画像URLを入力",
+    "confirm": "確認",
+    "opacity_placeholder": "0.1-1.0"
+  },
   "chart": {
     "cpu_usage": "CPU 使用率",
     "process": "进程数",

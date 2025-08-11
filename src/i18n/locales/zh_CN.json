@@ -308,6 +308,13 @@
     "mint": "薄荷色",
     "sky": "天蓝色"
   },
+  "themeSettings": {
+    "background_image_url": "背景图片URL",
+    "opacity": "设置透明度 0.1-1.0",
+    "input_placeholder": "输入背景图片URL",
+    "confirm": "确定",
+    "opacity_placeholder": "0.1-1.0"
+  },
   "chart": {
     "cpu_usage": "CPU 使用率",
     "process": "进程数",
