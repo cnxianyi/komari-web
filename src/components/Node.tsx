@@ -140,7 +140,7 @@ const Node = ({ basic, live, online }: NodeProps) => {
 
         <Separator size="4" className="-mt-1" />
 
-        <Flex direction="column" gap="2" >
+        <Flex direction="column" gap="1" >
           <Flex justify="between" hidden={isMobile} >
             <Text size="2" color="gray">
               OS
@@ -154,53 +154,56 @@ const Node = ({ basic, live, online }: NodeProps) => {
               <Text size="2">{getOSName(basic.os)} / {basic.arch}</Text>
             </Flex>
           </Flex>
-          <Flex className="md:flex-col flex-row md:gap-1 gap-4">
+          <Flex direction="column" gap="1">
             {/* CPU Usage */}
-            <UsageBar label={t("nodeCard.cpu")} value={liveData.cpu.usage} />
-            <Text
-              className="md:block hidden"
-              size="1"
-              color="gray"
-              style={{ marginTop: "-4px" }}
-            >
-              {t("nodeCard.load")}: {liveData.load?.load1} / {liveData.load?.load5} / {liveData.load?.load15}
-            </Text>
+            <div>
+              <UsageBar label={t("nodeCard.cpu")} value={liveData.cpu.usage} />
+              <Text
+                className="md:block"
+                size="1"
+                color="gray"
+              >
+                ({liveData.load?.load1} / {liveData.load?.load5} / {liveData.load?.load15})
+              </Text>
+            </div>
 
             {/* Memory Usage */}
-            <UsageBar label={t("nodeCard.ram")} value={memoryUsagePercent} />
-            <Text
-              className="md:block hidden"
-              size="1"
-              color="gray"
-              style={{ marginTop: "-4px" }}
-            >
-              ({formatBytes(liveData.ram.used)} / {formatBytes(basic.mem_total)}
-              )
-            </Text>
+            <div>
+              <UsageBar label={t("nodeCard.ram")} value={memoryUsagePercent} />
+              <Text
+                className="md:block"
+                size="1"
+                color="gray"
+              >
+                ({formatBytes(liveData.ram.used)} / {formatBytes(basic.mem_total)})
+              </Text>
+            </div>
 
-            {/* Memory Usage */}
-            <UsageBar label={t("nodeCard.swap")} value={swapUsagePercent} />
-            <Text
-              className="md:block hidden"
-              size="1"
-              color="gray"
-              style={{ marginTop: "-4px" }}
-            >
-              ({formatBytes(liveData.swap?.used)} / {formatBytes(basic.swap_total)}
-              )
-            </Text>
+            {/* Swap Usage */}
+            <div>
+              <UsageBar label={t("nodeCard.swap")} value={swapUsagePercent} />
+              <Text
+                className="md:block"
+                size="1"
+                color="gray"
+
+              >
+                ({formatBytes(liveData.swap?.used)} / {formatBytes(basic.swap_total)})
+              </Text>
+            </div>
 
             {/* Disk Usage */}
-            <UsageBar label={t("nodeCard.disk")} value={diskUsagePercent} />
-            <Text
-              size="1"
-              className="md:block hidden"
-              color="gray"
-              style={{ marginTop: "-4px" }}
-            >
-              ({formatBytes(liveData.disk.used)} /{" "}
-              {formatBytes(basic.disk_total)})
-            </Text>
+            <div>
+              <UsageBar label={t("nodeCard.disk")} value={diskUsagePercent} />
+              <Text
+                size="1"
+                className="md:block"
+                color="gray"
+              >
+                ({formatBytes(liveData.disk.used)} /{" "}
+                {formatBytes(basic.disk_total)})
+              </Text>
+            </div>
           </Flex>
 
           <Flex justify="between" hidden={isMobile}>
