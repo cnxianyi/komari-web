@@ -27,7 +27,7 @@ interface NodeTableProps {
   liveData: LiveData;
 }
 
-type SortField = 'name' | 'os' | 'status' | 'cpu' | 'ram' | 'disk' | 'price' | 'networkUp' | 'networkDown' | 'totalUp' | 'totalDown';
+type SortField = 'name' | 'os' | 'status' | 'cpu' | 'ram' | 'swap' | 'disk' | 'price' | 'networkUp' | 'networkDown' | 'totalUp' | 'totalDown';
 type SortOrder = 'asc' | 'desc' | 'default';
 
 interface SortState {
@@ -83,6 +83,7 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
     const defaultLive = {
       cpu: { usage: 0 },
       ram: { used: 0 },
+      swap: { used: 0 },
       disk: { used: 0 },
       network: { up: 0, down: 0, totalUp: 0, totalDown: 0 },
       uptime: 0,
@@ -128,6 +129,11 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
         const aRamPercent = a.mem_total ? (aData.ram.used / a.mem_total) * 100 : 0;
         const bRamPercent = b.mem_total ? (bData.ram.used / b.mem_total) * 100 : 0;
         comparison = aRamPercent - bRamPercent;
+        break;
+      case 'swap':
+        const aSwapPercent = a.swap_total ? (aData.swap?.used || 0) / a.swap_total * 100 : 0;
+        const bSwapPercent = b.swap_total ? (bData.swap?.used || 0) / b.swap_total * 100 : 0;
+        comparison = aSwapPercent - bSwapPercent;
         break;
       case 'disk':
         const aDiskPercent = a.disk_total ? (aData.disk.used / a.disk_total) * 100 : 0;
@@ -214,6 +220,16 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
             </TableHead>
             <TableHead 
               className="cursor-pointer hover:bg-accent-2 select-none"
+              onClick={handleSort('swap')}
+              title={t("nodeCard.sortTooltip")}
+            >
+              <Flex align="center" gap="1">
+                {t("nodeCard.swap")}
+                {getSortIcon('swap')}
+              </Flex>
+            </TableHead>
+            <TableHead 
+              className="cursor-pointer hover:bg-accent-2 select-none"
               onClick={handleSort('disk')}
               title={t("nodeCard.sortTooltip")}
             >
@@ -282,6 +298,9 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
 
             const memoryUsagePercent = node.mem_total
               ? (nodeData.ram.used / node.mem_total) * 100
+              : 0;
+            const swapUsagePercent = node.swap_total
+              ? (nodeData.swap?.used || 0) / node.swap_total * 100
               : 0;
             const diskUsagePercent = node.disk_total
               ? (nodeData.disk.used / node.disk_total) * 100
@@ -375,6 +394,12 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
 
                   <TableCell>
                     <div className="w-[100px]">
+                      <UsageBar label="" value={swapUsagePercent} compact />
+                    </div>
+                  </TableCell>
+
+                  <TableCell>
+                    <div className="w-[100px]">
                       <UsageBar label="" value={diskUsagePercent} compact />
                     </div>
                   </TableCell>
@@ -405,7 +430,7 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
                 {/* 展开的详细信息行 */}
                 {isExpanded && (
                   <TableRow className="expanded-row">
-                    <TableCell colSpan={12} className="bg-accent-1">
+                    <TableCell colSpan={13} className="bg-accent-1">
                       <div className="expand-content">
                         <ExpandedNodeDetails node={node} nodeData={nodeData} />
                       </div>
